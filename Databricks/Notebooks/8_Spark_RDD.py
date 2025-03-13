@@ -1,10 +1,12 @@
 # Databricks notebook source
+#Creating an RDD through list
 lst=[1,2,3,4,5,6,7,8,9,10]
 x=sc.parallelize(lst)
 print(x.collect())
 
 # COMMAND ----------
 
+#getNumPartitions is used to get no of partitions in an RDD. By default it is 8, we can modify if needed.
 x.getNumPartitions()
 
 # COMMAND ----------
@@ -16,6 +18,7 @@ x.collect()
 
 # COMMAND ----------
 
+#program for  square of a number
 def getsqr(n):
     return n*n
 
@@ -23,6 +26,7 @@ print (getsqr(11))
 
 # COMMAND ----------
 
+#program for  square of a number through lambda function
 n=lambda x:x*x
 print(n(11))
 
@@ -61,6 +65,8 @@ print(res)
 
 # COMMAND ----------
 
+#Check if number is even
+
 def iseven(n):
     if n%2==0:
         return True
@@ -73,6 +79,7 @@ print(res)
 
 # COMMAND ----------
 
+#identify the even number
 lst=[10,11,12,13,14,15,16]
 x=list(filter(lambda x:x%2==0,lst))
 print(x)
@@ -108,7 +115,7 @@ rdd2.collect()
 
 # COMMAND ----------
 
-#Groupby
+#Groupby Key
 
 lst=['Anthony', 'Amar', 'Balu', 'Bhagavan', 'Chandu', 'Chakri']
 
@@ -121,24 +128,11 @@ for i,j in res:
 
 # COMMAND ----------
 
-lst=[
-    (1, 'aa'),
-    (2, 'bb'),
-    (1, 'aa'),
-    (2, 'bb')
-]
-
-rdd1=sc.parallelize(lst)
-rdd2=rdd1.reduceByKey(lambda x,y:x+y)
-res=rdd2.collect()
-print(res)
-
-# COMMAND ----------
-
 dbutils.fs.head('dbfs:/FileStore/shared_uploads/kpavankumar335@gmail.com/inbound/salary.txt')
 
 # COMMAND ----------
 
+#Display salary gender wise through RDD
 filepath='dbfs:/FileStore/shared_uploads/kpavankumar335@gmail.com/inbound/salary.txt'
 rdd1=sc.textFile(filepath)
 rdd2=rdd1.map(lambda line:line.split(","))
@@ -148,6 +142,7 @@ rdd4.collect()
 
 # COMMAND ----------
 
+#Display salary gender wise through RDD
 filepath='dbfs:/FileStore/shared_uploads/kpavankumar335@gmail.com/inbound/salary.txt'
 rdd1=sc.textFile(filepath)
 rdd2=rdd1.map(lambda line:line.split(",")).map(lambda lst:(lst[2],int(lst[3]))).reduceByKey(lambda x,y:x+y)
@@ -165,6 +160,7 @@ dbutils.fs.head('dbfs:/FileStore/shared_uploads/kpavankumar335@gmail.com/inbound
 
 # COMMAND ----------
 
+#Count the no of words
 filepath='dbfs:/FileStore/shared_uploads/kpavankumar335@gmail.com/inbound/details.txt'
 rdd1=sc.textFile(filepath)
 rdd2=rdd1.flatMap(lambda line:line.split(" "))
